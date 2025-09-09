@@ -1,13 +1,16 @@
 # Use official nginx image
 FROM nginx:alpine
 
-# Remove default nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
+# Remove default nginx config
+RUN rm /etc/nginx/conf.d/default.conf
 
-# Copy build output to nginx web root
+# Copy our custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy static site files
 COPY . /usr/share/nginx/html
 
-# Expose port 80
+# Expose the Cloud Run port
 EXPOSE 8080
 
 # Start nginx
